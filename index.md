@@ -45,6 +45,10 @@ Hi! My name is Ethan Patel!
 <a href="{{site.baseurl}}/turtle" class="button large" style="background-color: #77a10dff">
     <span style="color: #ffffffff">Turtle</span>
 </a>
+<a href="https://poway.instructure.com/courses/182501" class="button large" style="background-color: #ffffffff">
+    <span style="color: #000000ff">Canvas</span>
+</a>
+
 
 <br>
 
