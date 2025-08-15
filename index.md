@@ -57,5 +57,7 @@ Hi! My name is Ethan Patel!
 
 ## Fun facts
 ### I am 15 years old
+### I was born in August
+### I have been to 6 continents
 
 
