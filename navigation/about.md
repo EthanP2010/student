@@ -101,7 +101,7 @@ Flags are made using Wikipedia images
 
 My childhood:
 
-- 🏫 Lots of Elementary Schools in Tucson, LA, Honolulu, and Glendale (CA)
+- I was born in 2010 and went to Design 39 when I was 4 years old.
 - 🏫 Middle and High School in Glendale (CA), Hoover High graduated '77
 - 🎓 Glendale CA Community College, UCLA Extension, LA Wilshire Computer Tech School '77 to '79
 - ⛪ England, London Missionary for Church of Jesus Christ of Latter-day Saints '79 to '81
