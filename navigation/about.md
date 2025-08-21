@@ -101,23 +101,21 @@ Flags are made using Wikipedia images
 
 My childhood:
 
-- I was born in 2010 and went to Design 39 when I was 4 years old.
-- 🏫 Middle and High School in Glendale (CA), Hoover High graduated '77
-- 🎓 Glendale CA Community College, UCLA Extension, LA Wilshire Computer Tech School '77 to '79
-- ⛪ England, London Missionary for Church of Jesus Christ of Latter-day Saints '79 to '81
-- 💼 Culver City, Glendale CA founder at Ashton-Tate, original PC's dBase 2 and 3 '82 to '87
-- 🎓 Eugene Oregon Undergraduate CompSci Degree at University of Oregon (Go Ducks!) '89 to '91
-- 💼 Eugene Oregon, founder and owner @ Microniche `88, Point Control CAD CAM developer '91 to '96
-- 🏢 San Diego CA Qualcomm, Satellite Comm and 1st Mobile OS (BREW) '96 to '19
-- 👨‍🏫 San Diego CA Teacher of Computer Science @ Del Norte High School San Diego '19 to present
+- I was born in 2010 and went to Design 39 when I was 4 years old 🏫
+- I attended D39 all the way through 8th grade and made great friends along the way 👨‍💻
+- I traveled a lot throughout my childhood. My favorite was going to Singapore ✈️
+- I always enjoyed going skiing and snowboarding with my family. We usually went to Big Bear but Mammoth is my favorite resort 🏂
+- I went from D39 to Del Norte and, obviously, still attend Del Norte 🎓
 
-### Culture, Family, and Fun
+### Fun Facts 😊:
 
-Everything for me, as for many others, revolves around family and faith.
-
-- My mother told me that I was Danish, English. and Irish, here is my researched [family tree]({{site.baseurl}}/images/about/familytree.png)
-- My family is pretty big as I have been married twice, my 1st wife passed away.  We have had 5 kids, 4 adopted by me, 1 biological.  Plus, there are three grandkids.  My name to my grandkids is Abuilito.
-- The gallery of pics has some of my family, fun, culture and faith memories.
+- I am 15 years old (1111)
+- I have two older sisters
+- I have lived in San Diego my whole life
+- I have been to 6 continents
+- I have broken 5 bones
+- I wrestle at Del Norte
+- I enjoy building LEGOs
 
 <comment>
 Gallery of Pics, scroll to the right for more ...
