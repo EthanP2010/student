@@ -5,6 +5,10 @@ permalink: /about/
 comments: true
 ---
 
+body {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1);
+}
+
 ## As a conversation Starter
 
 Cool places in my life:
