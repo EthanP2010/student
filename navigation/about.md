@@ -60,7 +60,7 @@ Flags are made using Wikipedia images
     var http_source = "https://upload.wikimedia.org/wikipedia/commons/";
     var living_in_the_world = [
         {"flag": "0/01/Flag_of_California.svg", "greeting": "Hey", "description": "California - forever"},
-        {"flag": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Flag_of_Singapore.svg", "greeting": "Ni Hao", "description": "Favorite vacation"},
+        {"flag": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/2880px-Flag_of_Singapore.svg.png", "greeting": "Ni Hao", "description": "Favorite vacation"},
         {"flag": "b/be/Flag_of_England.svg", "greeting": "Alright mate", "description": "England - 2 years"},
         {"flag": "e/ef/Flag_of_Hawaii.svg", "greeting": "Aloha", "description": "Hawaii - 2 years"},
     ];
