@@ -2,13 +2,16 @@
 layout: base
 title: Background with Object
 description: Use JavaScript to have an in motion background.
+# below are images for game
 sprite: images/platformer/sprites/image-removebg-preview (1).png
 background: images/platformer/backgrounds/Images (1).jpeg
 permalink: /background
 ---
 
+<!-- This is the game world -->
 <canvas id="world"></canvas>
 
+<!-- This is code that makes the game world -->
 <script>
 
   // Defines the canvas, like a painter where we will place object
@@ -70,6 +73,7 @@ permalink: /background
 
     class Player extends GameObject {
       constructor(image, gameWorld) {
+        // sprite dimensions
         const width = image.naturalWidth / 2;
         const height = image.naturalHeight / 2;
         const x = (gameWorld.width - width) / 2;
@@ -85,6 +89,7 @@ permalink: /background
     }
 
     class GameWorld {
+      // background moves using gameSpeed
       static gameSpeed = 5;
       constructor(backgroundImg, spriteImg) {
         this.canvas = document.getElementById("world");
@@ -104,6 +109,7 @@ permalink: /background
          new Player(spriteImg, this)
         ];
       }
+      // code below loops so background restarts
       gameLoop() {
         this.ctx.clearRect(0, 0, this.width, this.height);
         for (const obj of this.objects) {
