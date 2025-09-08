@@ -3,7 +3,7 @@ layout: base
 title: Background with Object
 description: Use JavaScript to have an in motion background.
 # below are images for game
-sprite: images/platformer/sprites/image-removebg-preview (1).png
+sprite: images/platformer/sprites/image-removebg-preview (2).png
 background: images/platformer/backgrounds/Images (1).jpeg
 permalink: /background
 ---
@@ -74,8 +74,8 @@ permalink: /background
     class Player extends GameObject {
       constructor(image, gameWorld) {
         // sprite dimensions
-        const width = image.naturalWidth / 2;
-        const height = image.naturalHeight / 2;
+        const width = image.naturalWidth / 0.5;
+        const height = image.naturalHeight / 0.5;
         const x = (gameWorld.width - width) / 2;
         const y = (gameWorld.height - height) / 2;
         super(image, width, height, x, y);
