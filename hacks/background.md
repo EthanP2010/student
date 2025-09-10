@@ -2,7 +2,6 @@
 layout: base
 title: Background with Object
 description: Use JavaScript to have an in motion background.
-# below are images for game
 sprite: images/platformer/sprites/image-removebg-preview (2).png
 background: images/platformer/backgrounds/Images (1).jpeg
 permalink: /background
