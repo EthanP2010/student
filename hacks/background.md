@@ -2,8 +2,8 @@
 layout: base
 title: Background with Object
 description: Use JavaScript to have an in motion background.
-sprite: images/platformer/sprites/image-removebg-preview (2).png
-background: images/platformer/backgrounds/Images (1).jpeg
+sprite: images/platformer/sprites/plane.png
+background: images/platformer/backgrounds/spaceworld.jpeg
 permalink: /background
 ---
 
