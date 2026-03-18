@@ -1,11 +1,3 @@
----
-layout: base
-title: Titanic Survival Predictor
-search_exclude: true
-description: Titanic survival rate predictor
-hide: true
-permalink: /titanic-survival
----
 
 <html lang="en">
 <head>
@@ -443,9 +435,11 @@ permalink: /titanic-survival
     font-size: 0.68rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    width: 110px;
+    width: 140px;
     flex-shrink: 0;
     opacity: 0.7;
+    word-break: keep-all;
+    white-space: nowrap;
   }
 
   .feat-bar-wrap {
@@ -668,7 +662,7 @@ permalink: /titanic-survival
         <span class="prob-pct" id="pct-survive">—</span>
       </div>
       <div class="prob-row">
-        <span class="prob-label" style="color:#e05a3a">Perish</span>
+        <span class="prob-label" style="color:#e05a3a">Die</span>
         <div class="prob-bar-wrap">
           <div class="prob-bar bar-die" id="bar-die"></div>
         </div>
