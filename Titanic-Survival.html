@@ -1,0 +1,859 @@
+---
+layout: base
+title: Titanic Survival Predictor
+search_exclude: true
+description: Titanic survival rate predictor
+hide: true
+permalink: /titanic-survival
+---
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titanic Survival Predictor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IM+Fell+English:ital@0;1&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --deep: #071118;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f5f0e8;
+    --rust: #8b3a2a;
+    --fog: rgba(245,240,232,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'IM Fell English', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated ocean background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(13,27,42,0.9) 0%, transparent 70%),
+      repeating-linear-gradient(
+        180deg,
+        transparent 0px, transparent 3px,
+        rgba(201,168,76,0.03) 3px, rgba(201,168,76,0.03) 4px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stars {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 40vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--cream);
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle var(--dur) var(--delay) infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: var(--bright); }
+  }
+
+  /* Waves */
+  .waves {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .wave {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 80px;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 60px,
+      rgba(201,168,76,0.04) 60px, rgba(201,168,76,0.04) 62px
+    );
+    border-top: 1px solid rgba(201,168,76,0.1);
+    animation: drift linear infinite;
+    transform-origin: bottom center;
+  }
+  .wave:nth-child(1) { animation-duration: 14s; bottom: 0; opacity: 0.8; }
+  .wave:nth-child(2) { animation-duration: 20s; bottom: 10px; opacity: 0.4; animation-direction: reverse; }
+  .wave:nth-child(3) { animation-duration: 26s; bottom: 20px; opacity: 0.2; }
+
+  @keyframes drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Layout */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px 120px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 50px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '✦ ─────────────────────────────── ✦';
+    display: block;
+    color: var(--gold);
+    opacity: 0.5;
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin-top: 20px;
+    font-family: 'Courier Prime', monospace;
+  }
+
+  .ship-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(-1deg); }
+    50% { transform: translateY(-6px) rotate(1deg); }
+  }
+
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1;
+    text-shadow: 0 2px 30px rgba(201,168,76,0.3);
+    letter-spacing: -1px;
+  }
+
+  .subtitle {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 10px;
+    opacity: 0.8;
+  }
+
+  /* Card */
+  .card {
+    background: linear-gradient(135deg, rgba(13,27,42,0.95) 0%, rgba(7,17,24,0.98) 100%);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    padding: 40px;
+    margin-bottom: 24px;
+    position: relative;
+    animation: slideUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Corner ornaments */
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.3;
+  }
+  .card::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .card::after  { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    font-weight: 700;
+  }
+
+  /* Form grid */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  input, select {
+    background: rgba(245,240,232,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream);
+    font-family: 'IM Fell English', serif;
+    font-size: 1rem;
+    padding: 10px 14px;
+    border-radius: 1px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus {
+    border-color: rgba(201,168,76,0.6);
+    background: rgba(245,240,232,0.07);
+  }
+
+  input[type="range"] {
+    padding: 6px 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold) var(--pct, 50%), rgba(201,168,76,0.15) var(--pct, 50%));
+    border-radius: 2px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin-top: -6px;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(201,168,76,0.5);
+  }
+
+  .range-display {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    text-align: right;
+    min-width: 50px;
+  }
+
+  .range-row { display: flex; align-items: center; gap: 12px; }
+
+  select option { background: var(--navy); color: var(--cream); }
+
+  /* Toggle for "Alone" */
+  .toggle-group {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .toggle-group input { display: none; }
+  .toggle-group label {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: rgba(245,240,232,0.4);
+    background: transparent;
+    transition: all 0.2s;
+    opacity: 1;
+    border: none;
+  }
+
+  .toggle-group input:checked + label {
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+  }
+
+  /* Predict Button */
+  .btn-predict {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .btn-predict::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+    z-index: 0;
+  }
+
+  .btn-predict:hover::before { transform: translateX(0); }
+  .btn-predict:hover { color: var(--deep); }
+  .btn-predict span { position: relative; z-index: 1; }
+
+  .btn-predict:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Result */
+  #result { display: none; }
+
+  .verdict {
+    text-align: center;
+    padding: 30px 20px;
+  }
+
+  .verdict-icon { font-size: 56px; display: block; margin-bottom: 16px; }
+
+  .verdict-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .verdict-sub {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    opacity: 0.6;
+    text-transform: uppercase;
+  }
+
+  /* Probability bars */
+  .prob-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .prob-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 70px;
+    flex-shrink: 0;
+  }
+
+  .prob-bar-wrap {
+    flex: 1;
+    height: 4px;
+    background: rgba(245,240,232,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .prob-bar {
+    height: 100%;
+    border-radius: 2px;
+    width: 0;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bar-survive { background: linear-gradient(90deg, #2d7a4f, #4ade80); }
+  .bar-die     { background: linear-gradient(90deg, var(--rust), #e05a3a); }
+
+  .prob-pct {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8rem;
+    width: 44px;
+    text-align: right;
+    color: var(--gold-light);
+  }
+
+  /* Feature importance */
+  .feature-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feat-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .feat-name {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: 110px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .feat-bar-wrap {
+    flex: 1;
+    height: 3px;
+    background: rgba(201,168,76,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .feat-bar {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(201,168,76,0.4), var(--gold));
+    width: 0;
+    transition: width 0.8s ease;
+    border-radius: 2px;
+  }
+
+  .feat-pct {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    width: 38px;
+    text-align: right;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* Model accuracy footer */
+  .accuracy-strip {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    margin-top: 20px;
+  }
+
+  .acc-item { text-align: center; }
+  .acc-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+  }
+  .acc-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: 2px;
+  }
+
+  .divider {
+    width: 1px;
+    background: rgba(201,168,76,0.15);
+    align-self: stretch;
+  }
+
+  /* Loader */
+  .loader {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.7;
+    text-transform: uppercase;
+  }
+
+  .loader.active { display: block; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  .error-msg {
+    background: rgba(139,58,42,0.15);
+    border: 1px solid rgba(139,58,42,0.4);
+    color: #e05a3a;
+    padding: 12px 16px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.8rem;
+    display: none;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 560px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+    .card { padding: 24px 20px; }
+    .accuracy-strip { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="waves">
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+</div>
+
+<div class="container">
+
+  <div class="header">
+    <span class="ship-icon">🚢</span>
+    <h1 class="title">Titanic</h1>
+    <p class="subtitle">Survival Probability on April 15, 1912</p>
+  </div>
+
+  <!-- Passenger Form -->
+  <div class="card">
+    <div class="card-title">⚓ Passenger Manifest</div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="pclass">Ticket Class</label>
+        <select id="pclass">
+          <option value="1">First Class — £30+</option>
+          <option value="2" selected>Second Class — £12–£30</option>
+          <option value="3">Third Class — under £12</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="sex">Sex</label>
+        <select id="sex">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age — <span id="age-val">30</span> yrs</label>
+        <div class="range-row">
+          <input type="range" id="age" min="1" max="80" value="30"
+            oninput="updateRange(this,'age-val','')">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="fare">Fare — £<span id="fare-val">16</span></label>
+        <div class="range-row">
+          <input type="range" id="fare" min="0" max="512" value="16"
+            oninput="updateRange(this,'fare-val','')">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="sibsp">Siblings / Spouses Aboard</label>
+        <select id="sibsp">
+          <option value="0">0</option>
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5+</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="parch">Parents / Children Aboard</label>
+        <select id="parch">
+          <option value="0">0</option>
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5+</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="embarked">Port of Embarkation</label>
+        <select id="embarked">
+          <option value="S" selected>Southampton (majority)</option>
+          <option value="C">Cherbourg</option>
+          <option value="Q">Queenstown</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Travelling Alone?</label>
+        <div class="toggle-group">
+          <input type="radio" name="alone" id="alone-no" value="false" checked>
+          <label for="alone-no">With Others</label>
+          <input type="radio" name="alone" id="alone-yes" value="true">
+          <label for="alone-yes">Alone</label>
+        </div>
+      </div>
+
+    </div>
+
+    <br>
+    <button class="btn-predict" onclick="predict()" id="predict-btn">
+      <span>⚓ Calculate Fate</span>
+    </button>
+    <div class="loader" id="loader">Consulting the fates…</div>
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <!-- Result Card -->
+  <div class="card" id="result">
+    <div class="card-title">Your Prediction</div>
+
+    <div class="verdict" id="verdict">
+      <span class="verdict-icon" id="verdict-icon">⚓</span>
+      <div class="verdict-label" id="verdict-label">—</div>
+      <div class="verdict-sub" id="verdict-sub">—</div>
+    </div>
+
+    <div style="margin-top:8px">
+      <div class="prob-row">
+        <span class="prob-label" style="color:#4ade80">Survive</span>
+        <div class="prob-bar-wrap">
+          <div class="prob-bar bar-survive" id="bar-survive"></div>
+        </div>
+        <span class="prob-pct" id="pct-survive">—</span>
+      </div>
+      <div class="prob-row">
+        <span class="prob-label" style="color:#e05a3a">Perish</span>
+        <div class="prob-bar-wrap">
+          <div class="prob-bar bar-die" id="bar-die"></div>
+        </div>
+        <span class="prob-pct" id="pct-die">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Weights Card -->
+  <div class="card" id="weights-card" style="display:none">
+    <div class="card-title">📊 Feature Importance</div>
+    <p style="font-size:0.82rem; opacity:0.55; margin-bottom:20px; font-family:'Courier Prime',monospace; font-size:0.7rem; letter-spacing:1px;">
+      What the Decision Tree weighted most heavily in its prediction
+    </p>
+    <div class="feature-grid" id="feature-grid"></div>
+
+    <div class="accuracy-strip" id="accuracy-strip">
+      <div class="acc-item">
+        <div class="acc-val" id="acc-lr">—</div>
+        <div class="acc-label">Logistic Regression</div>
+      </div>
+      <div class="divider"></div>
+      <div class="acc-item">
+        <div class="acc-val" id="acc-dt">—</div>
+        <div class="acc-label">Decision Tree</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Starfield
+
+const BACKEND = 'http://127.0.0.1:8587';
+
+(function(){
+  const s = document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const d = document.createElement('div');
+    d.className='star';
+    d.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;
+      --dur:${2+Math.random()*4}s;--delay:${Math.random()*5}s;
+      --bright:${0.3+Math.random()*0.7};
+      width:${Math.random()>0.8?3:2}px;height:${Math.random()>0.8?3:2}px`;
+    s.appendChild(d);
+  }
+})();
+
+// Range sliders
+function updateRange(el, labelId, suffix) {
+  document.getElementById(labelId).textContent = el.value + suffix;
+  const pct = ((el.value - el.min) / (el.max - el.min)) * 100;
+  el.style.setProperty('--pct', pct + '%');
+}
+
+// Init ranges
+document.querySelectorAll('input[type=range]').forEach(el => {
+  const pct = ((el.value - el.min) / (el.max - el.min)) * 100;
+  el.style.setProperty('--pct', pct + '%');
+});
+
+// Load weights + accuracy on page load
+async function loadWeights() {
+  try {
+    const [wRes, aRes] = await Promise.all([
+        fetch(`${BACKEND}/api/titanic/weights`),
+        fetch(`${BACKEND}/api/titanic/accuracy`)
+    ]);
+    const weights = await wRes.json();
+    const accuracy = await aRes.json();
+
+    const featureLabels = {
+      pclass:'Class', sex:'Sex', age:'Age', sibsp:'Siblings/Spouse',
+      parch:'Parents/Children', fare:'Fare', alone:'Alone',
+      embarked_C:'Embarked C', embarked_Q:'Embarked Q', embarked_S:'Embarked S'
+    };
+
+    const sorted = Object.entries(weights).sort((a,b)=>b[1]-a[1]);
+    const max = sorted[0][1];
+    const grid = document.getElementById('feature-grid');
+    grid.innerHTML = '';
+
+    sorted.forEach(([feat, imp], i) => {
+      const row = document.createElement('div');
+      row.className = 'feat-row';
+      row.innerHTML = `
+        <span class="feat-name">${featureLabels[feat]||feat}</span>
+        <div class="feat-bar-wrap">
+          <div class="feat-bar" id="fb-${i}" style="width:0%"></div>
+        </div>
+        <span class="feat-pct">${(imp*100).toFixed(1)}%</span>
+      `;
+      grid.appendChild(row);
+      setTimeout(() => {
+        document.getElementById(`fb-${i}`).style.width = ((imp/max)*100)+'%';
+      }, 300 + i * 80);
+    });
+
+    document.getElementById('acc-lr').textContent =
+      ((accuracy.logistic_regression||0)*100).toFixed(1)+'%';
+    document.getElementById('acc-dt').textContent =
+      ((accuracy.decision_tree||0)*100).toFixed(1)+'%';
+
+    document.getElementById('weights-card').style.display = 'block';
+  } catch(e) {
+    console.warn('Could not load weights:', e);
+  }
+}
+
+async function predict() {
+  const btn = document.getElementById('predict-btn');
+  const loader = document.getElementById('loader');
+  const errorEl = document.getElementById('error-msg');
+  
+
+  btn.disabled = true;
+  loader.className = 'loader active';
+  errorEl.style.display = 'none';
+
+  const alone = document.querySelector('input[name="alone"]:checked').value === 'true';
+
+  const passenger = {
+    pclass: parseInt(document.getElementById('pclass').value),
+    sex: document.getElementById('sex').value,
+    age: parseInt(document.getElementById('age').value),
+    sibsp: parseInt(document.getElementById('sibsp').value),
+    parch: parseInt(document.getElementById('parch').value),
+    fare: parseFloat(document.getElementById('fare').value),
+    embarked: document.getElementById('embarked').value,
+    alone: alone
+  };
+
+  try {
+    const res = await fetch(`${BACKEND}/api/titanic/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(passenger)
+    });
+
+    if (!res.ok) throw new Error('Server error: ' + res.status);
+    const data = await res.json();
+
+    showResult(data.survive, data.die);
+  } catch(e) {
+    errorEl.textContent = '⚠ ' + (e.message || 'Could not reach the server. Is the backend running?');
+    errorEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    loader.className = 'loader';
+  }
+}
+
+function showResult(survive, die) {
+  const resultEl = document.getElementById('result');
+  resultEl.style.display = 'block';
+  resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const icon = document.getElementById('verdict-icon');
+  const label = document.getElementById('verdict-label');
+  const sub = document.getElementById('verdict-sub');
+
+  if (survive >= 0.5) {
+    icon.textContent = '🛟';
+    label.textContent = 'You Would likely SURVIVE';
+    label.style.color = '#4ade80';
+    sub.textContent = `${(survive*100).toFixed(1)}% chance of survival`;
+  } else {
+    icon.textContent = '💀';
+    label.textContent = 'You Would likely DIE';
+    label.style.color = '#e05a3a';
+    sub.textContent = `Only ${(survive*100).toFixed(1)}% chance of survival`;
+  }
+
+  // Animate bars
+  setTimeout(() => {
+    document.getElementById('bar-survive').style.width = (survive*100)+'%';
+    document.getElementById('bar-die').style.width = (die*100)+'%';
+    document.getElementById('pct-survive').textContent = (survive*100).toFixed(1)+'%';
+    document.getElementById('pct-die').textContent = (die*100).toFixed(1)+'%';
+  }, 100);
+}
+
+// Load weights on startup
+window.addEventListener('DOMContentLoaded', loadWeights);
+</script>
+</body>
+</html>
