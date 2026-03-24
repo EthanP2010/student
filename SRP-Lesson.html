@@ -1,0 +1,348 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1 – Algorithms & Programming Basics</title>
+    <link rel="stylesheet" href="../../../assets/css/snakes-game.css">
+    <link rel="stylesheet" href="../../../assets/css/lesson-arcade.css">
+    <link rel="stylesheet" href="../../../assets/css/mini-games.css">
+    <link rel="stylesheet" href="../../../assets/css/snakes-theme.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .lesson-body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 1rem;
+            color: #333;
+            overflow-y: auto;
+        }
+        html { overflow-y: auto; }
+        .container {
+            max-width: 900px;
+            max-height: 90vh;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.2rem 1.5rem;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.5rem; margin-bottom: 0.4rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .header p { font-size: 0.9rem; opacity: 0.95; line-height: 1.4; }
+        .content { padding: 1.2rem; }
+        .section { margin-bottom: 1.2rem; animation: fadeIn 0.6s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .section h2 { color: #667eea; font-size: 1.2rem; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+        .section h2::before { content: '▸'; color: #764ba2; }
+        .section p { line-height: 1.5; color: #555; margin-bottom: 0.6rem; font-size: 0.9rem; }
+        code { background: #f5f5f5; padding: 0.2rem 0.5rem; border-radius: 4px; font-family: 'Courier New', monospace; color: #d63384; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 0.8rem; border-radius: 8px; overflow-x: auto; margin: 0.5rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        pre code { background: none; color: inherit; padding: 0; font-size: 0.8rem; line-height: 1.4; }
+        .question { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 1.2rem; border-radius: 12px; margin-top: 1.2rem; box-shadow: 0 8px 16px rgba(0,0,0,0.15); color: white; }
+        .question h3 { font-size: 1.1rem; margin-bottom: 0.6rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .question p { color: rgba(255,255,255,0.95); margin-bottom: 0.6rem; font-size: 0.9rem; }
+        .question pre { background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.2); }
+        .options { margin-top: 0.8rem; display: grid; gap: 0.5rem; }
+        .options label { background: rgba(255,255,255,0.2); padding: 0.6rem 0.9rem; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.6rem; backdrop-filter: blur(10px); border: 2px solid transparent; font-size: 0.9rem; }
+        .options label:hover:not(.disabled) { background: rgba(255,255,255,0.3); transform: translateX(5px); }
+        .options label.disabled { opacity: 0.5; cursor: not-allowed; }
+        .options input[type="radio"] { width: 20px; height: 20px; cursor: pointer; accent-color: white; }
+        .options label:has(input:checked) { background: rgba(255,255,255,0.4); border-color: white; font-weight: bold; }
+        #complete-btn { width: 100%; margin-top: 1.2rem; padding: 0.9rem; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(17,153,142,0.4); text-transform: uppercase; letter-spacing: 1px; }
+        #complete-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(17,153,142,0.5); }
+        #complete-btn:disabled { opacity: 0.5; cursor: not-allowed; background: #95a5a6; }
+        .icon { display: inline-block; margin-right: 0.5rem; }
+        @media (max-width: 768px) {
+            .lesson-body { padding: 1rem; }
+            .header h1 { font-size: 2rem; }
+            .content { padding: 1.5rem; }
+            .section h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body class="lesson-body snakes-theme">
+    <div class="lesson-wrapper">
+        <div class="container">
+            <div class="header">
+                <h1>🎯 Lesson 1: Algorithms & Programming Basics</h1>
+                <p>Master the fundamental building blocks of programming: variables, conditionals, and loops. These concepts are the foundation of every algorithm!</p>
+            </div>
+
+            <div class="arcade-zone lesson-arcade compact"
+                 data-arcade-lesson="1"
+                 data-arcade-game="loopRacer"
+                 data-arcade-complete="Challenge complete! You're ready for the reading.">
+                <div class="arcade-header">
+                    <h2>Loop Racer</h2>
+                    <p>Guide your character through a maze using loop commands!</p>
+                </div>
+                <div class="arcade-grid"></div>
+                <div class="arcade-status">Loading mini-game...</div>
+            </div>
+
+            <div class="content">
+                <div class="section">
+                    <h2>Algorithms & Sequencing</h2>
+                    <p>An algorithm is a finite, step-by-step process for solving a problem. Programs execute steps in order (sequencing) unless a decision or loop changes the flow. On the AP CSP exam, you should be able to describe what an algorithm does and predict its output.</p>
+                    <pre><code>score ← 0
+score ← score + 5
+DISPLAY(score)</code></pre>
+                </div>
+
+                <div class="section">
+                    <h2>Selection & Boolean Logic</h2>
+                    <p>Selection uses Boolean expressions to choose between paths. You should recognize operators like <code>AND</code>, <code>OR</code>, and comparisons, and be able to trace which branch runs.</p>
+                    <pre><code>IF (score &gt;= 10)
+{
+  DISPLAY("You win!")
+}
+ELSE
+{
+  DISPLAY("Keep trying!")
+}</code></pre>
+                </div>
+
+                <div class="section">
+                    <h2>Iteration & Procedures</h2>
+                    <p>Iteration repeats steps and is essential for processing lists and data. Procedures (with parameters) are an example of abstraction: they hide details and make code reusable.</p>
+                    <pre><code>count ← 0
+REPEAT 5 TIMES
+{
+  count ← count + 1
+}
+DISPLAY(count)</code></pre>
+                </div>
+
+                <div class="section">
+                    <h2>Exam Skills: How to Answer</h2>
+                    <p>1) Identify inputs and outputs. 2) Trace the code step by step. 3) Watch for loop counts and condition checks. 4) Look for off‑by‑one errors.</p>
+                </div>
+
+                <div class="question">
+                    <h3>💡 Interactive Quiz</h3>
+                    <p>Complete the mini-game above, then test your knowledge! What is displayed?</p>
+                    <pre><code>total ← 0
+REPEAT 3 TIMES
+{
+  total ← total + 2
+}
+DISPLAY(total)</code></pre>
+                    <div class="options">
+                        <label class="disabled"><input type="radio" name="q1" value="3" disabled><span>3</span></label>
+                        <label class="disabled"><input type="radio" name="q1" value="6" disabled><span>6</span></label>
+                        <label class="disabled"><input type="radio" name="q1" value="7" disabled><span>7</span></label>
+                        <label class="disabled"><input type="radio" name="q1" value="1" disabled><span>1</span></label>
+                    </div>
+                </div>
+
+                <button id="complete-btn" disabled>
+                    <span class="icon">🔒</span> Complete Mini-Game to Unlock
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../assets/js/theme-selector.js"></script>
+    <script src="../../../assets/js/mini-games.js"></script>
+    <script src="../../../assets/js/lesson-arcade.js"></script>
+    <script>
+        // ============================================================
+        // CONFIGURATION: Centralized constants (not responsibilities)
+        // ============================================================
+
+
+
+        const API_URL = (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+            ? "http://localhost:8306/api"
+            : "https://snakes.opencodingsociety.com/api";
+
+        const LESSON_CONFIG = {
+            lessonNumber: 1,
+            bulletsEarned: 5,
+            correctAnswer: "6",
+            redirectPath: "../game-board-part1.html"
+        };
+
+        const BUTTON_STATES = {
+            locked:   { icon: "🔒", text: "Complete Mini-Game to Unlock", disabled: true },
+            unlocked: { icon: "✓",  text: `Complete Lesson & Earn ${LESSON_CONFIG.bulletsEarned} Bullets`, disabled: false }
+        };
+
+        /**
+         * Quiz State Manager
+         * Function: setQuizOptionsEnabled
+         *
+         * Purpose: Enable or disable all quiz radio inputs and their labels
+         *
+         * PARAMETERS:
+         * @param {boolean} enabled - true to unlock quiz, false to lock it
+         *
+         * RETURN VALUE:
+         * @returns {void}
+         *
+         * ALGORITHM:
+         * 1. Select all radio inputs inside .question
+         * 2. Toggle disabled property based on enabled flag
+         * 3. Select all labels inside .question
+         * 4. Toggle 'disabled' CSS class based on enabled flag
+         *
+         * ABSTRACTION:
+         * - Hides DOM querying and iteration from callers
+         * - Single boolean controls both inputs and labels together
+         */
+
+        // STATE: Minimal shared state
+
+        let miniGameCompleted = false;
+
+        // RESPONSIBILITY: Update quiz option interactivity
+        function setQuizOptionsEnabled(enabled) {
+            document.querySelectorAll('.question input[type="radio"]')
+                .forEach(opt => opt.disabled = !enabled);
+            document.querySelectorAll('.question label')
+                .forEach(label => label.classList.toggle('disabled', !enabled));
+        }
+
+        
+        // RESPONSIBILITY: Update complete button UI state
+        function setCompleteButtonState(state) {
+            const btn = document.getElementById('complete-btn');
+            if (!btn) return;
+            btn.disabled = state.disabled;
+            btn.innerHTML = `<span class="icon">${state.icon}</span> ${state.text}`;
+        }
+
+        // RESPONSIBILITY: Apply full locked/unlocked UI state
+        function applyQuizLockedState() {
+            setQuizOptionsEnabled(false);
+            setCompleteButtonState(BUTTON_STATES.locked);
+        }
+
+        function applyQuizUnlockedState() {
+            setQuizOptionsEnabled(true);
+            setCompleteButtonState(BUTTON_STATES.unlocked);
+        }
+
+        // RESPONSIBILITY: Check if the arcade zone is complete
+        function isArcadeZoneComplete() {
+            const arcadeZone = document.querySelector('.arcade-zone');
+            return arcadeZone?.dataset?.arcadeCompleted === 'true';
+        }
+
+        // RESPONSIBILITY: Handle mini-game completion event
+        function onMiniGameCompleted() {
+            console.log('✓ Mini-game completed!');
+            miniGameCompleted = true;
+            applyQuizUnlockedState();
+        }
+
+        // RESPONSIBILITY: Poll until mini-game is detected as complete
+        function pollForMiniGameCompletion() {
+            if (miniGameCompleted) return;
+
+            if (!document.querySelector('.arcade-zone')) {
+                console.error('Arcade zone not found!');
+                return;
+            }
+
+            if (isArcadeZoneComplete()) {
+                onMiniGameCompleted();
+            } else {
+                setTimeout(pollForMiniGameCompletion, 500);
+            }
+        }
+
+        // RESPONSIBILITY: Validate quiz answer selection
+        function getSelectedAnswer() {
+            return document.querySelector('input[name="q1"]:checked')?.value ?? null;
+        }
+
+        function isAnswerCorrect(answer) {
+            return answer === LESSON_CONFIG.correctAnswer;
+        }
+
+        // RESPONSIBILITY: Post lesson completion to the server
+        async function postLessonComplete() {
+            const response = await fetch(`${API_URL}/snakes/complete-lesson`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    lesson_number: LESSON_CONFIG.lessonNumber,
+                    bullets_earned: LESSON_CONFIG.bulletsEarned
+                })
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || 'Error completing lesson.');
+            }
+
+            return response;
+        }
+
+        // RESPONSIBILITY: Handle successful lesson completion
+        function onLessonCompleteSuccess() {
+            alert(`Lesson completed! You earned ${LESSON_CONFIG.bulletsEarned} bullets.`);
+            window.location.href = LESSON_CONFIG.redirectPath;
+        }
+
+        // RESPONSIBILITY: Handle lesson completion network/server error
+        function onLessonCompleteError(err) {
+            console.error(err);
+            alert(err.message || 'Network error. Please try again later.');
+        }
+
+        // ORCHESTRATOR: Handle complete button click
+        async function handleCompleteButtonClick() {
+            if (!miniGameCompleted) {
+                alert('Please complete the mini-game challenge before answering the quiz!');
+                return;
+            }
+
+            const answer = getSelectedAnswer();
+            if (!answer) {
+                alert('Please select an answer before completing the lesson.');
+                return;
+            }
+
+            if (!isAnswerCorrect(answer)) {
+                alert('Incorrect answer. Review the lesson and try again!');
+                return;
+            }
+
+            try {
+                await postLessonComplete();
+                onLessonCompleteSuccess();
+            } catch (err) {
+                onLessonCompleteError(err);
+            }
+        }
+
+        // RESPONSIBILITY: Wire up event listeners
+        function bindEventListeners() {
+            document.getElementById('complete-btn')
+                .addEventListener('click', handleCompleteButtonClick);
+        }
+
+        // RESPONSIBILITY: Initialize page state on load
+        function initPage() {
+            applyQuizLockedState();
+            bindEventListeners();
+            setTimeout(pollForMiniGameCompletion, 2000);
+        }
+
+        // ENTRY POINT
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
