@@ -23,20 +23,6 @@ Hi! My name is Ethan Patel!
 
 > Coding starts with tools, explore these tools and procedures with a click.
 
-<<<<<<< HEAD
-<a href="https://github.com/Open-Coding-Society/student">
-    <img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white" alt="GitHub">
-</a>
-<a href="https://open-coding-society.github.io/student">
-    <img src="https://img.shields.io/badge/GitHub%20Pages-327FC7?logo=github&logoColor=white" alt="GitHub Pages">
-</a>
-<a href="https://kasm.opencodingsociety.com/" class="button small" style="background-color: #6b4bd3ff">
-    KASM
-</a>
-<a href="https://vscode.dev/" class="button small" style="background-color: #d38a4bff">
-    <span style="color: #FFFFFF">VSCODE</span>
-</a>
-=======
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     <a href="https://opencodingsociety.com" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid #FA8072; border-radius: 6px; font-weight: 700;">
         <img src="{{ '/favicon.ico' | relative_url }}" alt="OCS logo" style="width: 16px; height: 16px;">
@@ -51,7 +37,6 @@ Hi! My name is Ethan Patel!
         VSCode.dev
     </a>
 </div>
->>>>>>> upstream/main
 
 <br>
 
@@ -67,24 +52,6 @@ Hi! My name is Ethan Patel!
     <span style="color: #000000ff">Canvas</span>
 </a>
 
-<<<<<<< HEAD
-
-<br>
-
-<!-- Contact Section -->
-### Get in Touch
-
-> Feel free to reach out if you'd like to collaborate or learn more about our work.
-
-<p style="color: #2A7DB1;">Open Coding Society: <a href="https://opencodingsociety.com" style="color: #2A7DB1; text-decoration: underline;">Socials</a></p>
-
-## Fun facts
-### I am 15 years old
-### I was born in August
-### I have been to 6 continents
-
-
-=======
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     <a href="{{site.baseurl}}/snake" style="text-decoration: none;">
         <div style="background-color: #00FF00; color: black; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
@@ -104,4 +71,3 @@ Hi! My name is Ethan Patel!
 </div>
 
 <br>
->>>>>>> upstream/main
